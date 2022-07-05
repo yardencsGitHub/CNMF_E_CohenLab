@@ -2169,6 +2169,30 @@ classdef Sources2D < handle
             fprintf('\n');
         end
         
+        function manual_prune_and_merge(obj)
+            while 1
+                Coor = obj.show_contours(0.6,[],[],1);
+                inp=input('plot(p) / delete(d) / merge(m) / quit(q):','s');
+                switch inp
+                    case 'p'
+                        ind=input('enter rois to PLOT:');
+                        figure; plot(obj.C(ind,:)');
+                        pause;
+                    case 'd'
+                        ind=input('enter rois to DELETE:');
+                        obj.delete(ind);
+                    case 'm'
+                        ind=input('enter two rois to MERGE:');
+                        
+                        obj.manual_merge_multi_pairs({ind},1);
+                    case 'q'
+                        break;
+                end
+                delete(gcf);
+            end
+
+        end
+
         %% manually merge multiple pairs
         [merged_ROIs, newIDs, obj_bk]  = manual_merge_multi_pairs(obj, MC, show_merge)
         
